@@ -1,34 +1,39 @@
+import click
 import os
-from skimage import io
-from pyxelate import Pyx, Pal
+import yaml
+from lib import generate_assets
 
-def pixelate_images_in_folder(in_dir, out_dir, palette, size, sensitivity_multiplier):
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
+current_dir = os.path.dirname(__file__)
+default_directory = 'data'
 
-    for filename in os.listdir(in_dir):
-        in_path = in_dir + '/' + filename
-        out_path = out_dir + '/' + filename   
-        y=pixelator(
-            in_path=in_path,
-            palette=palette,
-            size=size,
-            sensitivity_multiplier=sensitivity_multiplier
-        )    
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+def cli(debug):
+    click.echo(f"Debug mode is {'on' if debug else 'off'}")
 
-        y.resize_out_img().save_out_img(path=out_path, overwrite=True)
-
-
-
-palette = [
-    (45,  50,  50),  #black
-    (240, 68,  64),  #red
-    (211, 223, 223), #white
-    (160, 161, 67),  #green
-    (233, 129, 76),  #orange
-]
-
-pixelate_images_in_folder('images/special_units', 'images/pixel_special_units', palette, (20, 20), 10)
+@cli.command()
+@click.option('--directory', '-d', default=None)
+def list(directory):
+    if directory is None:
+        directory = os.path.join(current_dir, default_directory)
+    files = os.listdir(directory)
+    basenames = [file.split('.')[0] for file in files]
+    fullnames= [os.path.abspath(os.path.join(directory, file))  for file in files]
+    paths = ['{} - {}'.format(basename, fullname) for (basename, fullname) in zip(basenames, fullnames)]
+    click.echo('\n'.join(paths))
 
 
-input.resize((10, 10), Image.BICUBIC).quantize()
+@cli.command()
+@click.option('--filename', '-f', required=True)
+def generate(filename):
+    data = yaml.full_load(open(filename).read())
+    click.echo(data)
+    generate_assets(**data)
+    
+
+
+    
+
+if __name__ == '__main__':
+    cli(obj={})
+

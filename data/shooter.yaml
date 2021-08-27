@@ -1,0 +1,27 @@
+from_dir: "images/normal"
+to_dir: "images/pixelate2"
+palette_image: "images/palettes/mulfok32-32x.png"
+palette_count: 32
+items:
+  - name: "special_units"
+    width: 64
+    height: 64
+  - name: "overload_monster"
+    width: 64
+    height: 64
+  - name: "top_down_spaceships"
+    width: 64
+    height: 64
+  - name: "simple_explosion"
+    width: 64
+    height: 64
+  - name: "sonic_explosion"
+    width: 64
+    height: 64
+  - name: "filled"
+  - name: "laser_beams"
+  - name: "bullets"
+  - name: "space_background"
+  - name: "stars"
+  - name: "main_weapons"
+  - name: "beam_jet"
