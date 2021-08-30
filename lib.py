@@ -40,7 +40,7 @@ def pixelate_images_in_folder(
     width=None,
     height=None,
     dither="none",
-    boost=True,
+    boost=False,
 ):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
