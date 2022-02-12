@@ -1,6 +1,6 @@
 from_dir: "images/source/shooter"
-to_dir: "images/created/shooter"
-palette_image: "images/palettes/mulfok32-32x.png"
+to_dir: "images/created/arena"
+palette_image: "images/palettes/steam-lords-32x.png"
 palette_count: 32
 items:
   - name: "special_units"
