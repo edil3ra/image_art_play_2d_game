@@ -1,10 +1,10 @@
 from_dir: "images/source/shooter"
-to_dir: "images/created/arena"
-palette_image: "images/palettes/stardust32-32x.png"
-palette_count: 32
+to_dir: "images/created/arena_red"
+palette_image: "images/palettes/bloodmoon21-32x.png"
+palette_count: 9
 depth: 3
 sobel: 5
-dither: "atkinson"
+dither: "naive"
 items:
   - name: "canon"
     width: 32
@@ -22,6 +22,9 @@ items:
     width: 64
     height: 64
   - name: "sonic_explosion"
+    width: 64
+    height: 64
+  - name: "tiles"
     width: 64
     height: 64
   - name: "filled"

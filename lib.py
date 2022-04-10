@@ -1,6 +1,3 @@
-SAVE_IMAGES = True
-
-
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +6,9 @@ from tqdm import tqdm
 from pyxelate import Pyx, Pal
 
 
-def plot(subplots=[], save_as=None, fig_h=9):
+SAVE_FOLDER = 'images/examples/'
+
+def plot(subplots=[], save_as=None, save_name='default.png', fig_h=9):
     """Plotting helper function"""
     fig, ax = plt.subplots(
         int(np.ceil(len(subplots) / 3)), min(3, len(subplots)), figsize=(18, fig_h)
@@ -25,9 +24,9 @@ def plot(subplots=[], save_as=None, fig_h=9):
         else:
             ax[i].imshow(subplot)
     fig.tight_layout()
-    if save_as is not None and SAVE_IMAGES:
-        # Save image as an example in README.md
-        plt.savefig(os.path.join("images/examples/", save_as), transparent=True)
+    if save_as is not None:
+        path = os.path.join(SAVE_FOLDER, save_name)
+        plt.savefig(path, transparent=True)
     plt.show()
 
 
@@ -40,6 +39,8 @@ def pixelate_images_in_folder(
     width=None,
     height=None,
     dither="none",
+    depth=1,
+    sobel=3,
 ):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
@@ -51,6 +52,8 @@ def pixelate_images_in_folder(
             height=height,
             palette=palette,
             dither=dither,
+            depth=1,
+            sobel=3,
         ).fit(image_model)
 
     for filename in os.listdir(in_dir):
@@ -64,15 +67,26 @@ def pixelate_images_in_folder(
                 height=height,
                 palette=palette,
                 dither=dither,
+                depth=1,
+                sobel=3,
             ).fit(image)
         transformed_image = model.transform(image)
         io.imsave(out_path, transformed_image)
 
 
-def generate_assets(from_dir, to_dir, palette_count, items, palette_image=None, dither="naive"):
+def generate_assets(
+    from_dir,
+    to_dir,
+    palette_count,
+    items,
+    depth=1,
+    sobel=3,
+    palette_image=None,
+    dither="none",
+):
     if not os.path.exists(to_dir):
         os.makedirs(to_dir)
-    
+
     for item in tqdm(items):
         from_subdir = f'{from_dir}/{item["name"]}'
         to_subdir = f'{to_dir}/{item["name"]}'
@@ -81,9 +95,9 @@ def generate_assets(from_dir, to_dir, palette_count, items, palette_image=None, 
             to_subdir,
             image_model=io.imread(palette_image) if palette_image is not None else None,
             palette=palette_count,
-            width=item.get('width'),
-            height=item.get('height'),
+            width=item.get("width"),
+            height=item.get("height"),
             dither=dither,
+            depth=depth,
+            sobel=sobel,
         )
-
-
