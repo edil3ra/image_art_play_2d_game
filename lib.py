@@ -1,5 +1,5 @@
 import os
-
+from dataclasses import dataclass
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
@@ -31,6 +31,13 @@ def plot(subplots=[], save_as=None, save_name="default.png", fig_h=9):
         path = os.path.join(SAVE_FOLDER, save_name)
         plt.savefig(path, transparent=True)
     plt.show()
+
+
+@dataclass
+class Pixelate:
+    in_dir:str
+    out_dir:str
+    
 
 
 def pixelate_images_in_folder(

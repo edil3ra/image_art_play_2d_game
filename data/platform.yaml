@@ -1,6 +1,6 @@
-from_dir: "images/source/platform"
-to_dir: "images/created/platform"
-palette_image: "images/palettes/grey-24.png"
+source_dir: "images/source/platform"
+destination_dir: "images/destination/platform"
+palette_dir: "palette"
 depth: 1
 sobel: 3
 dither: "naive"
@@ -8,15 +8,32 @@ items:
   - name: "items"
     width: 64
     height: 64
+    palettes:
+    - name: "grey-24.png"
+      size: 24
+    - name: "cybergum6-32x.png"
+      size: 32
   - name: "background"
     width: 64
     height: 64
+    palettes:
+    - name: "grey-24.png"
+      size: 24
   - name: "blue_tiles"
     width: 64
     height: 64
+    palettes:
+    - name: "grey-24.png"
+      size: 24
   - name: "enemies"
     width: 64
     height: 64
+    palettes:
+    - name: "grey-24.png"
+      size: 24
   - name: "other"
     width: 64
     height: 64
+    palettes:
+    - name: "grey-24.png"
+      size: 24
