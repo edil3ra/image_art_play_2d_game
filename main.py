@@ -27,7 +27,7 @@ def template(directory):
 
 @cli.command()
 @click.option('--directory', '-d', default=None)
-def created(directory):
+def list(directory):
     '''list created assets from templates'''
     if directory is None:
         directory = os.path.join(root_dir, default_created_directory)

@@ -1,7 +1,6 @@
 from_dir: "images/source/shooter"
 to_dir: "images/created/arena"
 palette_image: "images/palettes/stardust32-32x.png"
-palette_count: 32
 depth: 3
 sobel: 5
 dither: "atkinson"

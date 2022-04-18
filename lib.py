@@ -1,14 +1,17 @@
 import os
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+from pyxelate import Pal
+from pyxelate import Pyx
 from skimage import io
 from tqdm import tqdm
-from pyxelate import Pyx, Pal
+
+SAVE_FOLDER = "images/examples/"
 
 
-SAVE_FOLDER = 'images/examples/'
-
-def plot(subplots=[], save_as=None, save_name='default.png', fig_h=9):
+def plot(subplots=[], save_as=None, save_name="default.png", fig_h=9):
     """Plotting helper function"""
     fig, ax = plt.subplots(
         int(np.ceil(len(subplots) / 3)), min(3, len(subplots)), figsize=(18, fig_h)
@@ -33,55 +36,51 @@ def plot(subplots=[], save_as=None, save_name='default.png', fig_h=9):
 def pixelate_images_in_folder(
     in_dir,
     out_dir,
-    palette,
-    image_model=None,
+    image,
     factor=None,
     width=None,
     height=None,
     dither="none",
     depth=1,
     sobel=3,
+    svd=False,
 ):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    model = None
-    if image_model is not None:
+
+    palette_image = extract_palette_from_image(image)
+    for filename in os.listdir(in_dir):
+        in_path = in_dir + "/" + filename
+        out_path = out_dir + "/" + filename
+        image = np.asarray(Image.open(in_path).convert('RGB'))
         model = Pyx(
             factor=factor,
             width=width,
             height=height,
-            palette=palette,
+            palette=palette_image,
             dither=dither,
-            depth=1,
-            sobel=3,
-        ).fit(image_model)
-
-    for filename in os.listdir(in_dir):
-        in_path = in_dir + "/" + filename
-        out_path = out_dir + "/" + filename
-        image = io.imread(in_path)
-        if image_model is None:
-            model = Pyx(
-                factor=factor,
-                width=width,
-                height=height,
-                palette=palette,
-                dither=dither,
-                depth=1,
-                sobel=3,
-            ).fit(image)
-        transformed_image = model.transform(image)
+            depth=depth,
+            sobel=sobel,
+            svd=svd,
+        )
+        transformed_image = model.fit_transform(image)
         io.imsave(out_path, transformed_image)
+
+
+def extract_palette_from_image(image):
+    palette_image = np.asarray(Image.open(image).convert("RGB"))
+    palette_image_red = palette_image.flatten().reshape(-1, 3)
+    palette_image_uniq = np.unique(palette_image_red, axis=0)
+    return Pal.from_rgb(palette_image_uniq)
 
 
 def generate_assets(
     from_dir,
     to_dir,
-    palette_count,
     items,
+    palette_image,
     depth=1,
     sobel=3,
-    palette_image=None,
     dither="none",
 ):
     if not os.path.exists(to_dir):
@@ -93,8 +92,7 @@ def generate_assets(
         pixelate_images_in_folder(
             from_subdir,
             to_subdir,
-            image_model=io.imread(palette_image) if palette_image is not None else None,
-            palette=palette_count,
+            image=palette_image,
             width=item.get("width"),
             height=item.get("height"),
             dither=dither,

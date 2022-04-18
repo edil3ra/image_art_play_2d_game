@@ -1,0 +1,22 @@
+from_dir: "images/source/platform"
+to_dir: "images/created/platform"
+palette_image: "images/palettes/grey-24.png"
+depth: 1
+sobel: 3
+dither: "naive"
+items:
+  - name: "items"
+    width: 64
+    height: 64
+  - name: "background"
+    width: 64
+    height: 64
+  - name: "blue_tiles"
+    width: 64
+    height: 64
+  - name: "enemies"
+    width: 64
+    height: 64
+  - name: "other"
+    width: 64
+    height: 64

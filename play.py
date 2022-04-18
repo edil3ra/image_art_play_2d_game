@@ -4,7 +4,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 from pyxelate import Pal
-from pyxelate import BasePalette
 from pyxelate import Pyx
 from skimage import io
 from skimage import color
@@ -26,21 +25,27 @@ image = np.asarray(Image.open("images/source/platform/Brown tiles/tileBrown_03.p
 # plot([image, image_transformed], True)
 
 
-size = 20
+
+palette_image = np.asarray(Image.open("images/palettes/nyx8-32x.png").convert('RGB'))
+a = palette_image.flatten().reshape(-1, 3)
+b = np.unique(a, axis=0)
+
+
+
+
+size = 23
 max = 255
 min = 0
 step = max / size
-a = np.array(list([i * step, i * step, i * step] for i in range(1, size)), dtype=np.uint8) 
+a = np.array(list([i * step, i * step, i * step] for i in range(0, size+1)), dtype=np.uint8) 
 pal = Pal.from_rgb(a)
 
-
-
-
-    
-
+im = Image.fromarray(a)
+im.save('pallete-24.png')   
 
 # model = Pyx(palette=size, dither='bayer', svd=True, sobel=4, depth=2)
 model = Pyx(palette=pal, dither="none", svd=True, sobel=2, depth=2)
 image_transformed = model.fit_transform(image)
 plot([image, image_transformed], True)
+
 
