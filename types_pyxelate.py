@@ -26,7 +26,7 @@ class Item(BaseModel):
     palettes: List[Palette]
 
 
-class Main(BaseModel):
+class Config(BaseModel):
     source_dir: str
     destination_dir: str
     palette_dir: str
