@@ -26,6 +26,30 @@ image = np.asarray(Image.open("images/source/platform/Brown tiles/tileBrown_03.p
 
 
 
+
+def plot(subplots=[], save_as=None, save_name="default.png", fig_h=9):
+    """Plotting helper function"""
+    fig, ax = plt.subplots(
+        int(np.ceil(len(subplots) / 3)), min(3, len(subplots)), figsize=(18, fig_h)
+    )
+    if len(subplots) == 1:
+        ax = [ax]
+    else:
+        ax = ax.ravel()
+    for i, subplot in enumerate(subplots):
+        if isinstance(subplot, dict):
+            ax[i].set_title(subplot["title"])
+            ax[i].imshow(subplot["image"])
+        else:
+            ax[i].imshow(subplot)
+    fig.tight_layout()
+    if save_as is not None:
+        path = os.path.join(SAVE_FOLDER, save_name)
+        plt.savefig(path, transparent=True)
+    plt.show()
+
+
+
 palette_image = np.asarray(Image.open("images/palettes/nyx8-32x.png").convert('RGB'))
 a = palette_image.flatten().reshape(-1, 3)
 b = np.unique(a, axis=0)
